@@ -144,6 +144,9 @@ const useStore = () => React.useContext(StoreContext)
 // @ts-ignore
 const GroupContext = React.createContext<Group>(undefined)
 
+let idCounter = 0;
+const useId = () => 'cmdk'+(idCounter++).toString(32);
+
 const Command = React.forwardRef<HTMLDivElement, CommandProps>((props, forwardedRef) => {
   const ref = React.useRef<HTMLDivElement>(null)
   const state = useLazyRef<State>(() => ({
@@ -167,9 +170,9 @@ const Command = React.forwardRef<HTMLDivElement, CommandProps>((props, forwarded
   const propsRef = useAsRef(props)
   const { label, children, value, onValueChange, filter, shouldFilter, vimBindings = true, ...etc } = props
 
-  const listId = React.useId()
-  const labelId = React.useId()
-  const inputId = React.useId()
+  const listId = useId()
+  const labelId = useId()
+  const inputId = useId()
 
   const schedule = useScheduleLayoutEffect()
 
@@ -596,7 +599,7 @@ const Command = React.forwardRef<HTMLDivElement, CommandProps>((props, forwarded
  * the rendered item's `textContent`.
  */
 const Item = React.forwardRef<HTMLDivElement, ItemProps>((props, forwardedRef) => {
-  const id = React.useId()
+  const id = useId()
   const ref = React.useRef<HTMLDivElement>(null)
   const groupContext = React.useContext(GroupContext)
   const context = useCommand()
@@ -660,10 +663,10 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>((props, forwardedRef) =
  */
 const Group = React.forwardRef<HTMLDivElement, GroupProps>((props, forwardedRef) => {
   const { heading, children, forceMount, ...etc } = props
-  const id = React.useId()
+  const id = useId()
   const ref = React.useRef<HTMLDivElement>(null)
   const headingRef = React.useRef<HTMLDivElement>(null)
-  const headingId = React.useId()
+  const headingId = useId()
   const context = useCommand()
   const render = useCmdk((state) =>
     forceMount ? true : context.filter() === false ? true : !state.search ? true : state.filtered.groups.has(id),
