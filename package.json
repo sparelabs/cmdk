@@ -9,8 +9,6 @@
     "dist"
   ],
   "scripts": {
-    "prepublishOnly": "cp ../README.md . && pnpm build",
-    "postpublish": "rm README.md",
     "build": "tsup src",
     "dev": "tsup src --watch"
   },
